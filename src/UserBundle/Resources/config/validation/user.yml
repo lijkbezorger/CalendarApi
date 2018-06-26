@@ -1,0 +1,40 @@
+UserBundle\Entity\User:
+    properties:
+        email:
+            - Type :
+                type: string
+                groups: [create, update]
+            - Email:
+                message: The email "{{ value }}" is not a valid email.
+            - NotBlank:
+                groups: [create, update]
+        username:
+            - Type :
+                type: string
+                groups: [create, update]
+            - Length:
+                min: 5
+                minMessage: 'Username must be at least {{ limit }} characters long'
+                groups: [create, update]
+            - NotBlank:
+                groups: [create, update]
+        firstName:
+            - Type :
+                type: string
+                groups: [create, update]
+            - Length:
+                min: 3
+                minMessage: 'First name must be at least {{ limit }} characters long'
+                groups: [create, update]
+            - NotBlank:
+                groups: [create, update]
+        lastName:
+            - Type :
+                type: string
+                groups: [create, update]
+            - Length:
+                min: 3
+                minMessage: 'Last name must be at least {{ limit }} characters long'
+                groups: [create, update]
+            - NotBlank:
+                groups: [create, update]

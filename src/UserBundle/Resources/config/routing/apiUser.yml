@@ -1,0 +1,29 @@
+api_get_user_list:
+    path: /users
+    controller: UserBundle:UserApi:index
+    methods: [GET]
+
+api_create_user:
+    path: /users
+    controller: UserBundle:UserApi:create
+    methods: [POST]
+
+api_get_user:
+    path: /users/{id}
+    controller: UserBundle:UserApi:view
+    methods: [GET]
+
+api_full_update_user:
+    path: /users/{id}
+    controller: UserBundle:UserApi:update
+    methods: [PUT]
+
+api_partial_update_user:
+    path: /users/{id}
+    controller: UserBundle:UserApi:update
+    methods: [PATCH]
+
+api_delete_user:
+    path: /users/{id}
+    controller: UserBundle:UserApi:delete
+    methods: [DELETE]

@@ -1,0 +1,2 @@
+EventBundle\Entity\Reminder:
+    type: entity

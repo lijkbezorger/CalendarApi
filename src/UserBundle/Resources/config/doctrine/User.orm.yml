@@ -1,0 +1,32 @@
+UserBundle\Entity\User:
+    type: entity
+    table: user
+    repositoryClass: UserBundle\Repository\UserRepository
+    id:
+        id:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        email:
+            type: string
+            nullable: false
+            unique: true
+        username:
+            type: string
+            nullable: false
+            unique: true
+        firstName:
+            type: string
+            nullable: false
+        lastName:
+            type: string
+            nullable: false
+    manyToMany:
+        appointments:
+            targetEntity: EventBundle\Entity\Appointment
+            mappedBy: appointments

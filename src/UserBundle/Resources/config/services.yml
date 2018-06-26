@@ -1,0 +1,3 @@
+services:
+    user.user_save_service:
+        class: UserBundle\Service\UserSaveService

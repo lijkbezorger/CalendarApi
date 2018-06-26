@@ -1,0 +1,42 @@
+EventBundle\Entity\Event:
+    type: entity
+    inheritanceType: JOINED
+#    inheritanceType: SINGLE_TABLE
+    discriminatorColumn:
+        name: discriminator
+        type: string
+    discriminatorMap:
+        event: Event
+        reminder: Reminder
+        appointment: Appointment
+    id:
+        id:
+            type: smallint
+            nullable: false
+            options:
+                unsigned: true
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        title:
+            type: string
+            nullable: false
+        description:
+            type: text
+            nullable: false
+        startDateTime:
+            type: datetime
+            nullable: false
+        endDateTime:
+            type: datetime
+            nullable: false
+    manyToOne:
+        user:
+            targetEntity: UserBundle\Entity\User
+            inversedBy: events
+            cascade: ["persist", "merge", "detach"]
+            joinColumn:
+                referencedColumnName: id
+                nullable: true
+                onDelete: "SET NULL"

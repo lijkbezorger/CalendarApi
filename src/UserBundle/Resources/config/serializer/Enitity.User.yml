@@ -1,0 +1,16 @@
+UserBundle\Entity\User:
+    properties:
+        id:
+            groups: [default, create, update]
+        email:
+            type: string
+            groups: [default, create, update]
+        username:
+            type: string
+            groups: [default, create, update]
+        firstName:
+            type: string
+            groups: [default, create, update]
+        lastName:
+            type: string
+            groups: [default, create, update]

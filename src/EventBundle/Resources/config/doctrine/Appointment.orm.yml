@@ -1,0 +1,12 @@
+EventBundle\Entity\Appointment:
+    type: entity
+    manyToMany:
+        invitedUsers:
+            targetEntity:  UserBundle\Entity\User
+            invdersedBy: invitedUsers
+            joinColumns:
+                appointment_id:
+                    referencedColumnName: id
+            inverseJoinColumns:
+                user_id:
+                    referencedColumnName: id
