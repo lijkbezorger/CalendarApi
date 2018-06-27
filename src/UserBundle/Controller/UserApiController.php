@@ -8,6 +8,9 @@
 
 namespace UserBundle\Controller;
 
+use JMS\Serializer\DeserializationContext;
+use JMS\Serializer\SerializationContext;
+use JMS\Serializer\Serializer;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,7 +26,13 @@ class UserApiController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $users = $em->getRepository(User::class)->findAll();
-        $data = $this->get('serializer')->serialize($users, 'json');
+
+        $serializer = $this->get('jms_serializer');
+        $data = $serializer->serialize(
+            $users,
+            'json',
+            SerializationContext::create()->setGroups(['default'])
+        );
 
         return new Response($data);
     }
@@ -51,7 +60,12 @@ class UserApiController extends Controller
         $em->persist($user);
         $em->flush();
 
-        $data = $this->get('serializer')->serialize($user, 'json');
+        $serializer = $this->get('jms_serializer');
+        $data = $serializer->serialize(
+            $user,
+            'json',
+            SerializationContext::create()->setGroups(['detail'])
+        );
 
         return new Response($data, Response::HTTP_CREATED);
     }
@@ -69,45 +83,52 @@ class UserApiController extends Controller
         if (!$user) {
             return new Response('User not found', Response::HTTP_NOT_FOUND);
         }
-        $data = $this->get('serializer')->serialize($user, 'json');
+
+        $serializer = $this->get('jms_serializer');
+        $data = $serializer->serialize(
+            $user,
+            'json',
+            SerializationContext::create()->setGroups(['default', 'detail'])
+        );
 
         return new Response($data);
     }
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param integer $id
      * @return Response
      */
     public function updateAction(Request $request, int $id)
     {
         $em = $this->getDoctrine()->getManager();
-        /** @var User $userObject */
-        $userObject = $em->getRepository(User::class)->find($id);
+        /** @var User $userEntity */
+        $userEntity = $em->getRepository(User::class)->find($id);
+
+        if (!$userEntity) {
+            return new Response('User not found', Response::HTTP_NOT_FOUND);
+        }
 
         $requestContent = $request->getContent();
+        /** @var Serializer $serializer */
+        $serializer = $this->get('jms_serializer');
         /** @var User $user */
-        $user = $this->get('serializer')->deserialize($requestContent, User::class, 'json');
+        $user = $serializer->deserialize(
+            $requestContent,
+            User::class,
+            'json',
+            DeserializationContext::create()->setGroups(['update'])
+        );
 
-        //TODO add tool to load new data
-        if ($email = $user->getEmail()) {
-            $userObject->setEmail($email);
-        }
-        if ($username = $user->getUsername()) {
-            $userObject->setUsername($username);
-        }
-        if ($firstName = $user->getFirstName()) {
-            $userObject->setFirstName($firstName);
-        }
-        if ($lastName = $user->getLastName()) {
-            $userObject->setLastName($lastName);
-        }
-        //End TODO
-
-        $em->persist($userObject);
+        $userEntity = $this->get('user.user_save_service')->setDataToEntity($userEntity, $user, $serializer->getMetadataFactory());
+        $em->persist($userEntity);
         $em->flush();
 
-        $data = $this->get('serializer')->serialize($userObject, 'json');
+        $data = $serializer->serialize(
+            $userEntity,
+            'json',
+            SerializationContext::create()->setGroups(['default'])
+        );
 
         return new Response($data);
 
@@ -115,7 +136,7 @@ class UserApiController extends Controller
 
     /**
      * @param Request $request
-     * @param int $id
+     * @param integer $id
      * @return Response
      */
     public function deleteAction(Request $request, int $id)

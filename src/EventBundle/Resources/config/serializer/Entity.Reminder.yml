@@ -1,7 +1,9 @@
 UserBundle\Entity\User:
+    exclusion_policy: ALL
     properties:
         id:
-            groups: [default, create, update]
+            type: integer
+            groups: [default, update]
         email:
             type: string
             groups: [default, create, update]
@@ -14,3 +16,6 @@ UserBundle\Entity\User:
         lastName:
             type: string
             groups: [default, create, update]
+        appointments:
+            type: ArrayCollection<EventBundle\Entity\Appointment>
+            groups: [detail]

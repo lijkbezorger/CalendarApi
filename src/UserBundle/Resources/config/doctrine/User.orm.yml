@@ -29,4 +29,4 @@ UserBundle\Entity\User:
     manyToMany:
         appointments:
             targetEntity: EventBundle\Entity\Appointment
-            mappedBy: appointments
+            mappedBy: invitedUsers

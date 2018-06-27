@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             //Extra
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
+            new \JMS\SerializerBundle\JMSSerializerBundle(),
             //Custom
             new AppBundle\AppBundle(),
             new UserBundle\UserBundle(),

@@ -9,9 +9,13 @@
 namespace UserBundle\Service;
 
 
+use Metadata\MetadataFactoryInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessor;
+use UserBundle\Entity\User;
+
 class UserSaveService
 {
-    public function setDataToEntity($existingEntity, $requestEntity)
+    public function setDataToEntity(User $existingEntity, User $requestEntity, MetadataFactoryInterface $metaDataFactory)
     {
         if (!is_object($existingEntity) || !is_object($requestEntity)) {
             return false;
@@ -23,12 +27,19 @@ class UserSaveService
             return false;
         }
 
-        $attributes = get_object_vars($requestEntity);
+        $propertyAccessor = new PropertyAccessor();
 
-        foreach (get_object_vars($requestEntity) as $attribute) {
-            if ($existingEntity->{$attribute} != $requestEntity->{$attribute}) {
-                $existingEntity->{$attribute} = $requestEntity->{$attribute};
+        $propertyMetaData = $metaDataFactory->getMetadataForClass($objectClass)
+            ->propertyMetadata;
+
+        foreach ($propertyMetaData as $propertyName => $data) {
+            $currentName = $data->name;
+            $newValue = $propertyAccessor->getValue($requestEntity, $currentName);
+            if ($newValue !== null) {
+                $propertyAccessor->setValue($existingEntity, $currentName, $newValue);
             }
         }
+
+        return $existingEntity;
     }
 }

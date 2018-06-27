@@ -121,12 +121,10 @@ class User
     }
 
 
-    //---?
     public function __construct()
     {
         $this->appointments = new ArrayCollection();
     }
-
 
     /**
      * @var Appointment[]

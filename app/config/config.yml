@@ -18,7 +18,7 @@ framework:
         strict_requirements: ~
     form: ~
     csrf_protection: ~
-    serializer: { enabled: true }
+#    serializer: { enabled: true }
     validation: { enabled: true }
     #serializer: { enable_annotations: true }
     default_locale: '%locale%'
@@ -69,3 +69,7 @@ swiftmailer:
     username: '%mailer_user%'
     password: '%mailer_password%'
     spool: { type: memory }
+
+jms_serializer:
+    metadata:
+        auto_detection: true

@@ -1,7 +1,7 @@
 EventBundle\Entity\Event:
     type: entity
-    inheritanceType: JOINED
-#    inheritanceType: SINGLE_TABLE
+#    inheritanceType: JOINED
+    inheritanceType: SINGLE_TABLE
     discriminatorColumn:
         name: discriminator
         type: string
