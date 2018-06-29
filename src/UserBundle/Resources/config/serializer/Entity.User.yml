@@ -3,6 +3,7 @@ UserBundle\Entity\User:
     properties:
         id:
             type: integer
+            read_only: true
             groups: [default, update]
         email:
             type: string
@@ -12,9 +13,11 @@ UserBundle\Entity\User:
             groups: [default, create, update]
         firstName:
             type: string
+            serialized_name: firstName
             groups: [default, create, update]
         lastName:
             type: string
+            serialized_name: lastName
             groups: [default, create, update]
         appointments:
             type: ArrayCollection<EventBundle\Entity\Appointment>

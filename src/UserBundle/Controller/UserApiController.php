@@ -45,7 +45,12 @@ class UserApiController extends Controller
     {
         $requestContent = $request->getContent();
         /** @var User $user */
-        $user = $this->get('serializer')->deserialize($requestContent, User::class, 'json');
+        $user = $this->get('jms_serializer')->deserialize(
+            $requestContent,
+            User::class,
+            'json',
+            DeserializationContext::create()->setGroups(['create'])
+        );
 
         $validator = $this->get('validator');
         $errors = $validator->validate($user, null, ['create']);
@@ -64,7 +69,7 @@ class UserApiController extends Controller
         $data = $serializer->serialize(
             $user,
             'json',
-            SerializationContext::create()->setGroups(['detail'])
+            SerializationContext::create()->setGroups(['default', 'detail'])
         );
 
         return new Response($data, Response::HTTP_CREATED);
@@ -144,9 +149,12 @@ class UserApiController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var User $user */
         $user = $em->getRepository(User::class)->find($id);
+        if (!$user) {
+            return new Response('User not found', Response::HTTP_NOT_FOUND);
+        }
+
         $em->remove($user);
         $em->flush();
-
 
         return new Response('User was deleted', Response::HTTP_NO_CONTENT);
     }
