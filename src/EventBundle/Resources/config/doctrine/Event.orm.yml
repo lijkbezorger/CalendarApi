@@ -1,5 +1,6 @@
 EventBundle\Entity\Event:
     type: entity
+    repositoryClass: EventBundle\Repository\EventRepository
     inheritanceType: SINGLE_TABLE
     discriminatorColumn:
         name: discriminator

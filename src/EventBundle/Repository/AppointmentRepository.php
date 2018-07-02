@@ -9,9 +9,9 @@
 namespace EventBundle\Repository;
 
 
-use EventBundle\Entity\Reminder;
+use EventBundle\Entity\Appointment;
 
-class ReminderRepository extends EventRepository
+class AppointmentRepository extends EventRepository
 {
-    const ALIAS = Reminder::class;
+    const ALIAS = Appointment::class;
 }

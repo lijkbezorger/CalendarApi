@@ -26,7 +26,8 @@ class AppointmentApiController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $appointments = $em->getRepository(Appointment::class)->findAll();
+        $parameters = $request->query->all();
+        $appointments = $em->getRepository(Appointment::class)->search($parameters);
 
         $serializer = $this->get('jms_serializer');
         $data = $serializer->serialize(

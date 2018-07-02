@@ -26,13 +26,14 @@ class ReminderApiController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $reminders = $em->getRepository(Reminder::class)->findAll();
+        $parameters = $request->query->all();
+        $reminders = $em->getRepository(Reminder::class)->search($parameters);
 
         $serializer = $this->get('jms_serializer');
         $data = $serializer->serialize(
             $reminders,
             'json',
-            SerializationContext::create()->setGroups(['default'])
+            SerializationContext::create()->setGroups(['view'])
         );
 
         return new Response($data);

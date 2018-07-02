@@ -8,6 +8,7 @@
 
 namespace UserBundle\Controller;
 
+use EventBundle\Entity\Event;
 use JMS\Serializer\DeserializationContext;
 use JMS\Serializer\SerializationContext;
 use JMS\Serializer\Serializer;
@@ -157,5 +158,46 @@ class UserApiController extends Controller
         $em->flush();
 
         return new Response('User was deleted', Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function eventsAction(Request $request, int $id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $events = $em->getRepository(Event::class)->findByUserId($id);
+
+        $serializer = $this->get('jms_serializer');
+        $data = $serializer->serialize(
+            $events,
+            'json',
+            SerializationContext::create()->setGroups(['view'])
+        );
+
+        return new Response($data);
+    }
+
+    /**
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function eventsByTypeAction(Request $request, int $id, string $type)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $repository = $this->get('event.event_db_service')->getRepositoryByType($em, $type);
+        $events = $repository->findByUserId($id);
+
+        $serializer = $this->get('jms_serializer');
+        $data = $serializer->serialize(
+            $events,
+            'json',
+            SerializationContext::create()->setGroups(['view'])
+        );
+
+        return new Response($data);
     }
 }

@@ -3,21 +3,21 @@ EventBundle\Entity\Appointment:
     properties:
         id:
             type: integer
-            groups: [default, create, update]
+            groups: [default, create, view,  update]
         title:
             type: string
-            groups: [default, create, update]
+            groups: [default, create, view,  update]
         description:
             type: string
-            groups: [default, create, update]
+            groups: [default, create, view,  update]
         startDateTime:
             type: DateTime<'d.m.Y H:i:s'>
             serialized_name: startDateTime
-            groups: [default, create, update]
+            groups: [default, create, view,  update]
         endDateTime:
             type: DateTime<'d.m.Y H:i:s'>
             serialized_name: endDateTime
-            groups: [default, create, update]
+            groups: [default, create,  view, update]
         user:
             type: UserBundle\Entity\User
             max_depth: 0

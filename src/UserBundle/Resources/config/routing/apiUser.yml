@@ -27,3 +27,13 @@ api_delete_user:
     path: /users/{id}
     controller: UserBundle:UserApi:delete
     methods: [DELETE]
+
+api_user_events:
+    path: /users/{id}/events
+    controller: UserBundle:UserApi:events
+    methods: [GET]
+
+api_user_events_by_type:
+    path: /users/{id}/events/{type}
+    controller: UserBundle:UserApi:eventsByType
+    methods: [GET]

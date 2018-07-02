@@ -1,5 +1,6 @@
 EventBundle\Entity\Appointment:
     type: entity
+    repositoryClass: EventBundle\Repository\AppointmentRepository
     manyToMany:
         invitedUsers:
             targetEntity:  UserBundle\Entity\User

@@ -1,3 +1,5 @@
 services:
     event.event_save_service:
         class: EventBundle\Service\EventSaveService
+    event.event_db_service:
+            class: EventBundle\Service\EventDbService

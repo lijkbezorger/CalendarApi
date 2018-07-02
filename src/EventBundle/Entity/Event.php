@@ -14,11 +14,6 @@ use UserBundle\Entity\User;
 abstract class Event implements IEvent
 {
     /**
-     * @return string
-     */
-//    abstract public function getDiscriminator();
-
-    /**
      * @var int
      */
     protected $id;
