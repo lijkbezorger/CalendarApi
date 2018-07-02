@@ -1,6 +1,5 @@
 EventBundle\Entity\Event:
     type: entity
-#    inheritanceType: JOINED
     inheritanceType: SINGLE_TABLE
     discriminatorColumn:
         name: discriminator
@@ -35,7 +34,7 @@ EventBundle\Entity\Event:
         user:
             targetEntity: UserBundle\Entity\User
             inversedBy: events
-            cascade: ["persist", "merge", "detach"]
+            cascade: ["persist"]
             joinColumn:
                 referencedColumnName: id
                 nullable: true

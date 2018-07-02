@@ -1,0 +1,4 @@
+reminder:
+    resourse: 'validation/reminder.yml'
+appointment:
+    resourse: 'validation/appointment.yml'

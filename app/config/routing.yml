@@ -5,3 +5,7 @@ app:
 user:
     resource: '@UserBundle/Resources/config/routing.yml'
     prefix: /user
+
+event:
+    resource: '@EventBundle/Resources/config/routing.yml'
+    prefix: /event

@@ -1,0 +1,7 @@
+reminder:
+    resource: 'routing/apiReminder.yml'
+    prefix: /api
+
+appointment:
+    resource: 'routing/apiAppointment.yml'
+    prefix: /api

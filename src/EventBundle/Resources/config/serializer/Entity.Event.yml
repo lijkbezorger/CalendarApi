@@ -1,0 +1,2 @@
+EventBundle\Entity\Event:
+    exclusion_policy: ALL

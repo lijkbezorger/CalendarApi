@@ -11,8 +11,12 @@ namespace EventBundle\Entity;
 
 use UserBundle\Entity\User;
 
-abstract class Event
+abstract class Event implements IEvent
 {
+    /**
+     * @return string
+     */
+//    abstract public function getDiscriminator();
 
     /**
      * @var int
@@ -38,6 +42,11 @@ abstract class Event
      * @var \DateTime
      */
     protected $endDateTime;
+
+    /**
+     * @var string
+     */
+    protected $discriminator;
 
     /**
      * @var User
@@ -132,5 +141,19 @@ abstract class Event
         $this->user = $user;
     }
 
+    /**
+     * @return string
+     */
+    public function getDiscriminator()
+    {
+        return $this->discriminator;
+    }
 
+    /**
+     * @param string $discriminator
+     */
+    public function setDiscriminator($discriminator)
+    {
+        $this->discriminator = $discriminator;
+    }
 }

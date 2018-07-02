@@ -1,0 +1,3 @@
+services:
+    event.event_save_service:
+        class: EventBundle\Service\EventSaveService

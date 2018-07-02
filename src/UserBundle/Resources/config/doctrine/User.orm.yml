@@ -26,6 +26,10 @@ UserBundle\Entity\User:
         lastName:
             type: string
             nullable: false
+    oneToMany:
+        events:
+            targetEntity: EventBundle\Entity\Event
+            mappedBy: user
     manyToMany:
         appointments:
             targetEntity: EventBundle\Entity\Appointment

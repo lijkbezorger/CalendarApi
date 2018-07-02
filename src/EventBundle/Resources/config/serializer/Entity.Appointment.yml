@@ -1,4 +1,4 @@
-EventBundle\Entity\Reminder:
+EventBundle\Entity\Appointment:
     exclusion_policy: ALL
     properties:
         id:
@@ -25,4 +25,9 @@ EventBundle\Entity\Reminder:
             accessor:
                 getter: getUser
                 setter: setUser
+            groups: [default, create, update]
+        invitedUsers:
+            type: ArrayCollection<UserBundle\Entity\User>
+            serialized_name: invitedUsers
+            max_depth: 0
             groups: [default, create, update]

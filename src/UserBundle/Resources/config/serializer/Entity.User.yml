@@ -3,8 +3,7 @@ UserBundle\Entity\User:
     properties:
         id:
             type: integer
-            read_only: true
-            groups: [default, update]
+            groups: [default, create, update]
         email:
             type: string
             groups: [default, create, update]

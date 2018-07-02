@@ -1,0 +1,29 @@
+api_get_reminder_list:
+    path: /reminders
+    controller: EventBundle:ReminderApi:index
+    methods: [GET]
+
+api_create_reminder:
+    path: /reminders
+    controller: EventBundle:ReminderApi:create
+    methods: [POST]
+
+api_get_reminder:
+    path: /reminders/{id}
+    controller: EventBundle:ReminderApi:view
+    methods: [GET]
+
+api_full_update_reminder:
+    path: /reminders/{id}
+    controller: EventBundle:ReminderApi:update
+    methods: [PUT]
+
+api_partial_update_reminder:
+    path: /reminders/{id}
+    controller: EventBundle:ReminderApi:update
+    methods: [PATCH]
+
+api_delete_reminder:
+    path: /reminders/{id}
+    controller: EventBundle:ReminderApi:delete
+    methods: [DELETE]

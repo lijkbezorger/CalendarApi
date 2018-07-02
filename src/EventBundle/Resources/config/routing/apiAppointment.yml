@@ -1,0 +1,29 @@
+api_get_appointment_list:
+    path: /appointments
+    controller: EventBundle:AppointmentApi:index
+    methods: [GET]
+
+api_create_appointment:
+    path: /appointments
+    controller: EventBundle:AppointmentApi:create
+    methods: [POST]
+
+api_get_appointment:
+    path: /appointments/{id}
+    controller: EventBundle:AppointmentApi:view
+    methods: [GET]
+
+api_full_update_appointment:
+    path: /appointments/{id}
+    controller: EventBundle:AppointmentApi:update
+    methods: [PUT]
+
+api_partial_update_appointment:
+    path: /appointments/{id}
+    controller: EventBundle:AppointmentApi:update
+    methods: [PATCH]
+
+api_delete_appointment:
+    path: /appointments/{id}
+    controller: EventBundle:AppointmentApi:delete
+    methods: [DELETE]

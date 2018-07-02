@@ -10,6 +10,7 @@ namespace UserBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use EventBundle\Entity\Appointment;
+use EventBundle\Entity\IEvent;
 
 
 /**
@@ -117,13 +118,33 @@ class User
 
     public function __toString()
     {
-        return $this->username;
+        return $this->getUsername();
     }
 
 
     public function __construct()
     {
+        $this->events = new ArrayCollection();
         $this->appointments = new ArrayCollection();
+    }
+
+    /** @var IEvent[] */
+    private $events;
+
+    /**
+     * @return IEvent[]
+     */
+    public function getEvents()
+    {
+        return $this->events;
+    }
+
+    /**
+     * @param IEvent[] $events
+     */
+    public function setEvents($events)
+    {
+        $this->events = $events;
     }
 
     /**

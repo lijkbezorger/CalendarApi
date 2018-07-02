@@ -1,2 +1,3 @@
 EventBundle\Entity\Reminder:
     type: entity
+    repositoryClass: EventBundle\Repository\ReminderRepository

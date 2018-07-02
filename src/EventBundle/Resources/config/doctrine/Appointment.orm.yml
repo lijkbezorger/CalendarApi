@@ -3,7 +3,8 @@ EventBundle\Entity\Appointment:
     manyToMany:
         invitedUsers:
             targetEntity:  UserBundle\Entity\User
-            invdersedBy: invitedUsers
+            invdersedBy: appointments
+            cascade: ["persist"]
             joinColumns:
                 appointment_id:
                     referencedColumnName: id
