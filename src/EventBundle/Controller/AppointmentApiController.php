@@ -10,14 +10,21 @@ namespace EventBundle\Controller;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use EventBundle\Entity\Appointment;
-use JMS\Serializer\DeserializationContext;
-use JMS\Serializer\SerializationContext;
+use FOS\RestBundle\Context\Context;
+use FOS\RestBundle\Controller\FOSRestController;
+use FOS\RestBundle\Request\ParamFetcherInterface;
 use JMS\Serializer\Serializer;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Validator\ConstraintViolationListInterface;
 
-class AppointmentApiController extends Controller
+/**
+ *
+ * Class AppointmentApiController
+ * @package EventBundle\Controller
+ */
+class AppointmentApiController extends FOSRestController
 {
     /**
      * @param Request $request
@@ -29,66 +36,43 @@ class AppointmentApiController extends Controller
         $parameters = $request->query->all();
         $appointments = $em->getRepository(Appointment::class)->search($parameters);
 
-        $serializer = $this->get('jms_serializer');
-        $data = $serializer->serialize(
-            $appointments,
-            'json',
-            SerializationContext::create()->setGroups(['default'])
-        );
+        $statusCode = (count($appointments)) ? Response::HTTP_OK : Response::HTTP_NO_CONTENT;
+        $view = $this->view($appointments, $statusCode);
+        $view->setContext((new Context())->setGroups(['view']));
 
-        return new Response($data);
+        return $this->handleView($view);
     }
 
     /**
+     * @ParamConverter("appointment", converter="fos_rest.request_body")
+     *
      * @param Request $request
+     * @param ConstraintViolationListInterface $validationErrors
+     * @param Appointment $appointment
      * @return Response
      */
-    public function createAction(Request $request)
+    public function createAction(Request $request, ConstraintViolationListInterface $validationErrors, Appointment $appointment)
     {
-        $serializer = $this->get('jms_serializer');
-
-        $requestContent = $request->getContent();
-
-        try {
-            /** @var Appointment $appointment */
-            $appointment = $serializer->deserialize(
-                $requestContent,
-                Appointment::class,
-                'json',
-                DeserializationContext::create()->setGroups(['create'])->enableMaxDepthChecks()
-            );
-
-            $invitedUsers = $appointment->getInvitedUsers();
-            if (is_a($invitedUsers, ArrayCollection::class)) {
-                foreach ($invitedUsers as $invitedUser) {
-                    $appointment->addUser($invitedUser);
-                }
+        $invitedUsers = $appointment->getInvitedUsers();
+        if (is_a($invitedUsers, ArrayCollection::class)) {
+            foreach ($invitedUsers as $invitedUser) {
+                $appointment->addUser($invitedUser);
             }
-
-            $validator = $this->get('validator');
-            $errors = $validator->validate($appointment, null, ['create']);
-
-            if (count($errors) > 0) {
-                $errorsString = (string)$errors;
-
-                return new Response($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
-            }
-
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($appointment);
-            $em->flush();
-
-            $data = $serializer->serialize(
-                $appointment,
-                'json',
-                SerializationContext::create()->setGroups(['default'])
-            );
-
-            return new Response($data, Response::HTTP_CREATED);
-
-        } catch (\Exception $exception) {
-            return new Response('Wrong data provided', Response::HTTP_UNPROCESSABLE_ENTITY);
         }
+
+        if (count($validationErrors)) {
+            $errorsString = (string)$validationErrors;
+            $view = $this->view($errorsString, Response::HTTP_UNPROCESSABLE_ENTITY);
+            return $this->handleView($view);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($appointment);
+        $em->flush();
+
+        $view = $this->view($appointment, Response::HTTP_CREATED);
+        $view->setContext((new Context())->setGroups(['view']));
+        return $this->handleView($view);
     }
 
     /**
@@ -101,59 +85,59 @@ class AppointmentApiController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var Appointment $appointment */
         $appointment = $em->getRepository(Appointment::class)->find($id);
-        if (!$appointment) {
-            return new Response('Appointment not found', Response::HTTP_NOT_FOUND);
+
+        if ($appointment) {
+            $data = $appointment;
+            $statusCode = Response::HTTP_OK;
+        } else {
+            $data = 'Appointment not found';
+            $statusCode = Response::HTTP_NOT_FOUND;
         }
 
-        $serializer = $this->get('jms_serializer');
-        $data = $serializer->serialize(
-            $appointment,
-            'json',
-            SerializationContext::create()->setGroups(['default'])
-        );
+        $view = $this->view($data, $statusCode);
+        $view->setContext((new Context())->setGroups(['view']));
 
-        return new Response($data);
+        return $this->handleView($view);
     }
 
     /**
+     * @ParamConverter("appointment")
+     * @ParamConverter("newAppointment", converter="fos_rest.request_body")
+     *
      * @param Request $request
-     * @param integer $id
+     * @param ParamFetcherInterface $fetcher
+     * @param ConstraintViolationListInterface $validationErrors
+     * @param Appointment $appointment
+     * @param Appointment $newAppointment
      * @return Response
      */
-    public function updateAction(Request $request, int $id)
+    public function updateAction(
+        Request $request,
+        ParamFetcherInterface $fetcher,
+        ConstraintViolationListInterface $validationErrors,
+        Appointment $appointment,
+        Appointment $newAppointment
+    )
     {
-        $em = $this->getDoctrine()->getManager();
-        /** @var Appointment $appointmentEntity */
-        $appointmentEntity = $em->getRepository(Appointment::class)->find($id);
+        if (!$appointment) {
+            $view = $this->view('Appointment not found', Response::HTTP_NOT_FOUND);
+            $view->setContext((new Context())->setGroups(['view']));
 
-        if (!$appointmentEntity) {
-            return new Response('Appointment not found', Response::HTTP_NOT_FOUND);
+            return $this->handleView($view);
         }
 
-        $requestContent = $request->getContent();
         /** @var Serializer $serializer */
         $serializer = $this->get('jms_serializer');
-        /** @var Appointment $appointment */
-        $appointment = $serializer->deserialize(
-            $requestContent,
-            Appointment::class,
-            'json',
-            DeserializationContext::create()->setGroups(['update'])
-        );
+        $appointment = $this->get('event.event_save_service')
+            ->setDataToEntity($appointment, $newAppointment, $serializer->getMetadataFactory());
 
-        $appointmentEntity = $this->get('event.event_save_service')
-            ->setDataToEntity($appointmentEntity, $appointment, $serializer->getMetadataFactory());
-        $em->persist($appointmentEntity);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($appointment);
         $em->flush();
 
-        $data = $serializer->serialize(
-            $appointmentEntity,
-            'json',
-            SerializationContext::create()->setGroups(['update'])
-        );
-
-        return new Response($data);
-
+        $view = $this->view($appointment, Response::HTTP_OK);
+        $view->setContext((new Context())->setGroups(['view']));
+        return $this->handleView($view);
     }
 
     /**
@@ -166,13 +150,17 @@ class AppointmentApiController extends Controller
         $em = $this->getDoctrine()->getManager();
         /** @var Appointment $appointment */
         $appointment = $em->getRepository(Appointment::class)->find($id);
-        if (!$appointment) {
-            return new Response('Appointment not found', Response::HTTP_NOT_FOUND);
+        if ($appointment) {
+            $statusCode = Response::HTTP_NO_CONTENT;
+            $data = 'Appointment was deleted';
+            $em->remove($appointment);
+            $em->flush();
+        } else {
+            $data = 'Appointment not found';
+            $statusCode = Response::HTTP_NOT_FOUND;
         }
 
-        $em->remove($appointment);
-        $em->flush();
-
-        return new Response('Appointment was deleted', Response::HTTP_NO_CONTENT);
+        $view = $this->view($data, $statusCode);
+        return $this->handleView($view);
     }
 }

@@ -34,10 +34,13 @@ framework:
     php_errors:
         log: true
 
+    templating: { engines: ['twig']}
+
 # Twig Configuration
 twig:
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
+    exception_controller: 'FOS\RestBundle\Controller\ExceptionController::showAction'
 
 # Doctrine Configuration
 doctrine:
@@ -74,3 +77,27 @@ swiftmailer:
 jms_serializer:
     metadata:
         auto_detection: true
+
+sensio_framework_extra:
+    request: { converters: true }
+
+fos_rest:
+    param_fetcher_listener: true
+    routing_loader:
+        default_format: json
+        include_format: false
+    format_listener:
+        rules:
+            - { path: '^/', priorities: ['json'], fallback_format: json, prefer_extension: false }
+    view:
+        view_response_listener: 'force'
+        formats:
+            json: true
+            xml: true
+    body_converter:
+        enabled: true
+        validate: true
+        validation_errors_argument: validationErrors
+    exception:
+        enabled: true
+        exception_controller: 'fos_rest.exception.controller:showAction'

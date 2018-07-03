@@ -40,3 +40,8 @@ services:
 
     jms_serializer.object_constructor:
         alias: jms_serializer.doctrine_object_constructor
+
+    ### Argument resolver
+    EventBundle\ArgumentResolver\FosResolver:
+        tags:
+            - { name: controller.argument_value_resolver, priority: 50 }

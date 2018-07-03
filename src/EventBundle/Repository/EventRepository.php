@@ -87,16 +87,20 @@ class EventRepository extends EntityRepository
             $startAt = new \DateTime('01.01.1900');
         }
 
-        $qb->andWhere(
-            $qb->expr()->not(
-                $qb->expr()->orX(
-                    $qb->expr()->lte(static::ALIAS . '.endDateTime', ':startAt'),
-                    $qb->expr()->gte(static::ALIAS . '.startDateTime', ':endAt')
+        if ($startAt && $endAt) {
+            $qb->andWhere(
+                $qb->expr()->not(
+                    $qb->expr()->orX(
+                        $qb->expr()->lte(static::ALIAS . '.endDateTime', ':startAt'),
+                        $qb->expr()->gte(static::ALIAS . '.startDateTime', ':endAt')
+                    )
                 )
             )
-        )
-            ->setParameter('startAt', $startAt)
-            ->setParameter('endAt', $endAt);
+                ->setParameter('startAt', $startAt)
+                ->setParameter('endAt', $endAt);
+        }
+
+
 
         return $qb->getQuery()->execute();
     }
