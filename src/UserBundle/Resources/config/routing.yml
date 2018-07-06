@@ -1,4 +1,3 @@
 user:
     resource: 'routing/apiUser.yml'
-    prefix: /api
-
+    prefix: /

@@ -1,0 +1,5 @@
+services:
+    ### Authentification
+    token_authenticator:
+        class: CustomSecurityBundle\Security\TokenAuthenticator
+        arguments: ['@lexik_jwt_authentication.encoder.lcobucci', '@doctrine.orm.entity_manager']

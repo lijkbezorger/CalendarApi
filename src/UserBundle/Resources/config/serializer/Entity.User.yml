@@ -3,21 +3,21 @@ UserBundle\Entity\User:
     properties:
         id:
             type: integer
-            groups: [default, create, update]
+            groups: [default, create, view, update]
         email:
             type: string
-            groups: [default, create, update]
+            groups: [default, create, view, update]
         username:
             type: string
-            groups: [default, create, update]
+            groups: [default, create, view, update]
         firstName:
             type: string
             serialized_name: firstName
-            groups: [default, create, update]
+            groups: [default, create, view, update]
         lastName:
             type: string
             serialized_name: lastName
-            groups: [default, create, update]
+            groups: [default, create, view, update]
         appointments:
             type: ArrayCollection<EventBundle\Entity\Appointment>
             groups: [detail]

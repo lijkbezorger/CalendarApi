@@ -11,28 +11,29 @@ namespace UserBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use EventBundle\Entity\Appointment;
 use EventBundle\Entity\IEvent;
+use FOS\UserBundle\Model\User as BaseUser;
 
 
 /**
  * Class User
  * @package UserBundle\Entity
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var integer
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
      */
-    private $email;
+    protected $email;
 
     /**
      * @var string
      */
-    private $username;
+    protected $username;
 
     /**
      * @var string
@@ -124,6 +125,8 @@ class User
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->events = new ArrayCollection();
         $this->appointments = new ArrayCollection();
     }

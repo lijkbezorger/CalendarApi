@@ -13,5 +13,5 @@ use EventBundle\Entity\Reminder;
 
 class ReminderRepository extends EventRepository
 {
-    const ALIAS = Reminder::class;
+    const ALIAS = 'reminder';
 }

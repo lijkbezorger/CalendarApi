@@ -1,0 +1,9 @@
+api_security_login:
+    path: /authorize
+    controller: CustomSecurityBundle:SecurityApi:authorize
+    methods: [POST]
+
+api_security_register:
+    path: /register
+    controller: CustomSecurityBundle:SecurityApi:register
+    methods: [POST]

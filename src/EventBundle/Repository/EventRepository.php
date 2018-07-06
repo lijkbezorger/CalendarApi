@@ -16,7 +16,7 @@ use EventBundle\Entity\IEvent;
 
 class EventRepository extends EntityRepository
 {
-    const ALIAS = Event::class;
+    const ALIAS = 'event';
 
     /**
      * @return IEvent[]

@@ -13,5 +13,5 @@ use EventBundle\Entity\Appointment;
 
 class AppointmentRepository extends EventRepository
 {
-    const ALIAS = Appointment::class;
+    const ALIAS = 'appointment';
 }

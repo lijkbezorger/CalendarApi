@@ -1,0 +1,4 @@
+security:
+    resource: 'routing/apiSecurity.yml'
+    prefix: /security
+

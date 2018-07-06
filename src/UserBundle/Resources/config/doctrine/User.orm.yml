@@ -12,14 +12,6 @@ UserBundle\Entity\User:
             generator:
                 strategy: AUTO
     fields:
-        email:
-            type: string
-            nullable: false
-            unique: true
-        username:
-            type: string
-            nullable: false
-            unique: true
         firstName:
             type: string
             nullable: false

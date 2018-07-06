@@ -1,11 +1,18 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
 security:
+    encoders:
+        FOS\UserBundle\Model\UserInterface: md5
+
+    role_hierarchy:
+        ROLE_USER: ROLE_USER
+        ROLE_ADMIN: ROLE_USER
+        ROLE_ROOT: ROLE_ADMIN
 
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        fos_userbundle:
+            id: fos_user.user_provider.username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -13,12 +20,27 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
-        main:
-            anonymous: ~
-            # activate different ways to authenticate
+        security:
+            pattern: ^/api/security
+            logout: true
+            anonymous: true
 
-            # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate
-            #http_basic: ~
+        api:
+            pattern: ^/
+            guard:
+                authenticators:
+                    - 'token_authenticator'
+#                    - 'lexik_jwt_authentication.jwt_token_authenticator'
 
-            # https://symfony.com/doc/current/security/form_login_setup.html
-            #form_login: ~
+    access_control:
+        - { path: ^/api/security/authorize, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/security/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/api/security/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
+
+        ## User actions authorization
+        - { path: ^/api/users/*, role: ROLE_USER, methods: [GET] }
+        - { path: ^/api/users/*, role: ROLE_ADMIN, methods: [POST, PUT, PATCH, DELETE]}
+
+        ## Event actions authorization
+        - { path: ^/api/events/*, role: ROLE_USER, methods: [GET] }
+        - { path: ^/api/events/*, role: ROLE_ADMIN, methods: [POST, PUT, PATCH, DELETE]}
