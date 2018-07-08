@@ -63,10 +63,13 @@ class User extends BaseUser
 
     /**
      * @param string $email
+     * @return User
      */
     public function setEmail($email)
     {
         $this->email = $email;
+
+        return $this;
     }
 
     /**
@@ -79,10 +82,13 @@ class User extends BaseUser
 
     /**
      * @param string $username
+     * @return User
      */
     public function setUsername($username)
     {
         $this->username = $username;
+
+        return $this;
     }
 
     /**
@@ -95,10 +101,13 @@ class User extends BaseUser
 
     /**
      * @param string $firstName
+     * @return User
      */
     public function setFirstName($firstName)
     {
         $this->firstName = $firstName;
+
+        return $this;
     }
 
     /**
@@ -111,10 +120,13 @@ class User extends BaseUser
 
     /**
      * @param string $lastName
+     * @return User
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+
+        return $this;
     }
 
     public function __toString()

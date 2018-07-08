@@ -9,7 +9,6 @@
 namespace CustomSecurityBundle\Security;
 
 use Doctrine\ORM\EntityManager;
-use FOS\RestBundle\View\View;
 use Lexik\Bundle\JWTAuthenticationBundle\Encoder\JWTEncoderInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\AuthorizationHeaderTokenExtractor;
 use Symfony\Component\HttpFoundation\Request;
@@ -56,7 +55,6 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
         } catch (\Exception $e) {
             $data = false;
         }
-
 
         if ($data === false) {
             throw new CustomUserMessageAuthenticationException('Invalid Token');

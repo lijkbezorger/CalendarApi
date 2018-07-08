@@ -23,7 +23,6 @@ class AppKernel extends Kernel
             new \FOS\UserBundle\FOSUserBundle(),
             new \Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle(),
             //Custom
-            new AppBundle\AppBundle(),
             new UserBundle\UserBundle(),
             new EventBundle\EventBundle(),
             new CustomSecurityBundle\CustomSecurityBundle(),

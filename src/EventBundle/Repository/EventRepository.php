@@ -81,7 +81,7 @@ class EventRepository extends EntityRepository
         $endAt = ($endAt) ? new \DateTime($endAt) : null;
 
         if ($startAt && !$endAt) {
-            $endAt = new \DateTime('01.01.2050');
+            $endAt = (new \DateTime('01.01.2050'))->setTime(0, 0, 0);
         }
         if (!$startAt && $endAt) {
             $startAt = new \DateTime('01.01.1900');

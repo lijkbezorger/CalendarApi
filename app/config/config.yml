@@ -113,7 +113,7 @@ fos_user:
         sender_name: "%mailer_user%"
 
 lexik_jwt_authentication:
-    private_key_path: "%kernel.root_dir%/../var/jwt/private.pem"
-    public_key_path:  "%kernel.root_dir%/../var/jwt/public.pem"
-    pass_phrase:      "%jwt_key_pass_phrase%"
-    token_ttl:        216000
+    secret_key: "%kernel.root_dir%/../var/jwt/private.pem"
+    public_key: "%kernel.root_dir%/../var/jwt/public.pem"
+    pass_phrase: "%jwt_key_pass_phrase%"
+    token_ttl: 216000

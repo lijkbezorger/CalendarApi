@@ -146,7 +146,6 @@ class ReminderApiController extends Controller
         );
 
         return new Response($data);
-
     }
 
     /**

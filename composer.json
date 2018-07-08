@@ -4,7 +4,6 @@
   "type": "project",
   "autoload": {
     "psr-4": {
-      "AppBundle\\": "src/AppBundle",
       "UserBundle\\": "src/UserBundle",
       "EventBundle\\": "src/EventBundle",
       "CustomSecurityBundle\\": "src/CustomSecurityBundle"
@@ -44,7 +43,7 @@
   },
   "require-dev": {
     "sensio/generator-bundle": "^3.0",
-    "symfony/phpunit-bridge": "^3.0"
+    "symfony/phpunit-bridge": "^4.1"
   },
   "scripts": {
     "symfony-scripts": [
